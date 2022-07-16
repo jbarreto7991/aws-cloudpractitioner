@@ -72,6 +72,7 @@ EOF
 Revisando los servicios EC2, EBS y VPC: Diagramar la arquitectura de la solución. Agregar los siguientes datos solicitados a la arquitectura generada.
 
 <br>
+
 **1. EC2 - Details Section**
 
 * Instance ID
@@ -83,6 +84,7 @@ Revisando los servicios EC2, EBS y VPC: Diagramar la arquitectura de la solució
 * Key Pair name
 
 <br>
+
 **2. EC2 - Security Section**
 
 * IAM Role
@@ -90,6 +92,7 @@ Revisando los servicios EC2, EBS y VPC: Diagramar la arquitectura de la solució
 * Security Group - Outbound Rules
 
 <br>
+
 **3. EC2 - Networking Section**
 
 * Public IPv4 address
@@ -102,6 +105,7 @@ Revisando los servicios EC2, EBS y VPC: Diagramar la arquitectura de la solució
 * Interface ID 
 
 <br>
+
 **4. EC2 - Storage Section**
 
 * Root device name
