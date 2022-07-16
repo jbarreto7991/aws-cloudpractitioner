@@ -1,19 +1,18 @@
 # AWS Cloud Practitioner - Laboratorio 01
 ### Objetivo: 
-* Identificación de componentes EC2
-* Identificación de los elementos "User Data" y "Metadata"
+* Identificación de los componentes "User Data" y "Metadata"
+* Identificación de caracteristicas en EC2
 
 ---
-<br>
 
-### Actividades Técnicas:
+### A - Actividades Técnicas
 <br>
-1. Lanzar 01 Instancia EC2 Amazon Linux 2
+1. Lanzar 01 Instancia EC2 Amazon Linux 2. La instancia se deberá configurar según la siguiente información:
 
-* Instance Type: t2.micro
-* Generar una Key Pair tipo RSA en formato .pem
-* Network Settings: Por defecto (VPC Default) 
-* Crear Security Group (Inbound Rules), según se detalla a continuación. 
+* "Instance Type": t2.micro
+* Generar una "Key Pair" tipo RSA en formato .pem
+* "Network Settings": Por defecto (VPC Default) 
+* Crear "Security Group" (Inbound Rules) lo detallado a continuación. 
 
     |Type Port|  Source  |
     |---------|----------|
@@ -23,7 +22,7 @@
 * Configure Storage: Por defecto
 
 <br>
-2. En la sección "Advanced details" agregar el siguiente código en la sección "User Data".
+2. En la sección "Advanced details - User Data" agregar el siguiente código
 <br><br>
 
 ```bash
@@ -61,7 +60,7 @@ EOF
 ```
 
 <br>
-3. Acceder a la IP Pública de la instancia aprovisionada desde nuestro navegador.
+3. Acceder a la IP Pública de la instancia aprovisionada desde nuestro navegador web.
 <br><br>
 
 <img src="images/lab01_01.jpg">
@@ -69,12 +68,11 @@ EOF
 <br>
 
 ---
-### Identificación de Componentes EC2:
-<br>
+### B - Identificación de Componentes EC2
 Revisando los servicios EC2, EBS y VPC: Diagramar la arquitectura de la solución. Agregar los siguientes datos solicitados a la arquitectura generada.
 
 <br>
-1. EC2 - Details Section
+**1. EC2 - Details Section**
 
 * Instance ID
 * Instances State
@@ -85,14 +83,14 @@ Revisando los servicios EC2, EBS y VPC: Diagramar la arquitectura de la solució
 * Key Pair name
 
 <br>
-2. EC2 - Security Section
+**2. EC2 - Security Section**
 
 * IAM Role
 * Security Group - Inbound Rules
 * Security Group - Outbound Rules
 
 <br>
-3. EC2 - Networking Section
+**3. EC2 - Networking Section**
 
 * Public IPv4 address
 * Private IPv4 address
@@ -104,7 +102,7 @@ Revisando los servicios EC2, EBS y VPC: Diagramar la arquitectura de la solució
 * Interface ID 
 
 <br>
-3. EC2 - Storage Section
+**4. EC2 - Storage Section**
 
 * Root device name
 * Root device type
