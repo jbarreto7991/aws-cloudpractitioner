@@ -128,14 +128,9 @@ Revisando los servicios **EC2, EBS y VPC**: Diagramar la arquitectura de la solu
 
 <br>
 
-**6. VPC - Your VPC**
+**6. VPC**
 
-* IPv4 CIDR
-
-<br>
-
-**7. VPC - Other parameter**
-
+* IPv4 CIDR (VPC)
 * IPv4 CIDR (Subnet)
 * Availability Zone (Subnet)
 * Routes (Route Tables)
