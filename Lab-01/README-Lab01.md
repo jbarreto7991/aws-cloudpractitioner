@@ -7,7 +7,8 @@
 
 ### A - Actividades Técnicas
 <br>
-1. Lanzar 01 Instancia EC2 Amazon Linux 2. La instancia se deberá configurar según la siguiente información:
+
+1. **Lanzar** 01 Instancia EC2 Amazon Linux 2. La instancia se deberá configurar según la siguiente información:
 
 * "Instance Type": t2.micro
 * Generar una "Key Pair" tipo RSA en formato .pem
@@ -22,7 +23,8 @@
 * Configure Storage: Por defecto
 
 <br>
-2. En la sección "Advanced details - User Data" agregar el siguiente código
+
+2. En la sección **"Advanced details - User Data"** agregar el siguiente código
 <br><br>
 
 ```bash
@@ -60,7 +62,8 @@ EOF
 ```
 
 <br>
-3. Acceder a la IP Pública de la instancia aprovisionada desde nuestro navegador web.
+
+3. Acceder a la **IP Pública** de la instancia aprovisionada desde nuestro navegador web.
 <br><br>
 
 <img src="images/lab01_01.jpg">
@@ -69,7 +72,7 @@ EOF
 
 ---
 ### B - Identificación de Componentes EC2
-Revisando los servicios EC2, EBS y VPC: Diagramar la arquitectura de la solución. Agregar los siguientes datos solicitados a la arquitectura generada.
+Revisando los servicios **EC2, EBS y VPC**: Diagramar la arquitectura de la solución. Agregar los siguientes datos solicitados a la arquitectura generada.
 
 <br>
 
@@ -112,3 +115,29 @@ Revisando los servicios EC2, EBS y VPC: Diagramar la arquitectura de la solució
 * Root device type
 * Volume ID
 * Volume Size (GiB)
+
+<br>
+
+**5. EBS - Volumes**
+
+* Type
+* IOPS
+* Volume status
+* Encryption
+* Availability Zone
+
+<br>
+
+**6. VPC - Your VPC**
+
+* IPv4 CIDR
+
+<br>
+
+**7. VPC - Other parameter**
+
+* IPv4 CIDR (Subnet)
+* Availability Zone (Subnet)
+* Routes (Route Tables)
+* Internet Gateway (Internet Gateway)
+
