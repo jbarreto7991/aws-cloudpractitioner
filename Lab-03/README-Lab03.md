@@ -11,6 +11,7 @@
 
 1. **Lanzar** 01 Instancia EC2 Ubuntu 18.04 LTS. La instancia se deberá configurar según la siguiente información:
 <br>
+
 * "Instance Type": c5d.large
 * Generar una "Key Pair" tipo RSA en formato .pem
 * "Network Settings": Por defecto (VPC Default) 
