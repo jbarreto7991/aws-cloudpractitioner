@@ -1,5 +1,0 @@
-sudo su
-cp /etc/netplan/50-cloud-init.yaml /etc/netplan/backup
-echo "" > /etc/netplan/50-cloud-init.yaml
-sleep 10
-reboot
