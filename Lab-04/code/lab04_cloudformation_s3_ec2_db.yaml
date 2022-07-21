@@ -294,7 +294,7 @@ Resources:
   Ec2Instance:
     Type: AWS::EC2::Instance
     Properties:
-      InstanceType: !Select [ 1, !Ref InstancesFamily]
+      InstanceType: !Select [ 0, !Ref InstancesFamily]
       ImageId: !FindInMap [RegionAndInstanceEC2TypeToAMIID, !Ref "AWS::Region", HVM64]
       IamInstanceProfile: !Ref IAMServerProfile
       KeyName: !Ref KeyPair
@@ -323,7 +323,7 @@ Resources:
             
             #Instalación nodejs
             cd /opt
-            git clone https://github.com/jbarreto7991/crud-aws.git
+            git clone https://github.com/jbarreto7991/aws-cloudpractitioner.git
             curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
             sudo apt install nodejs -y
             #sudo apt install npm -y
@@ -334,17 +334,17 @@ Resources:
             PUBLIC_IP=$(curl http://169.254.169.254/latest/meta-data/public-ipv4)
             
             #Reemplazando parámetro en archivo de configuración del frontend - Frontend
-            sed 's+http://$PUBLIC_IP/v1+http://'"$PUBLIC_IP"'/v1+g' /opt/crud-aws/frontend/src/config/axios.js >> /opt/crud-aws/frontend/src/config/bk_axios.js
-            rm /opt/crud-aws/frontend/src/config/axios.js
-            mv /opt/crud-aws/frontend/src/config/bk_axios.js /opt/crud-aws/frontend/src/config/axios.js
+            sed 's+http://$PUBLIC_IP/v1+http://'"$PUBLIC_IP"'/v1+g' /opt/aws-cloudpractitioner/App/frontend/src/config/axios.js >> /opt/aws-cloudpractitioner/App/frontend/src/config/bk_axios.js
+            rm /opt/aws-cloudpractitioner/App/frontend/src/config/axios.js
+            mv /opt/aws-cloudpractitioner/App/frontend/src/config/bk_axios.js /opt/aws-cloudpractitioner/App/frontend/src/config/axios.js
             
             #Compilar frontend
-            cd /opt/crud-aws/frontend
+            cd /opt/aws-cloudpractitioner/App/frontend
             #sudo npm install npm -g
             npm install
             #npm start
             npm run build
-            cd /opt/crud-aws/frontend/build/
+            cd /opt/aws-cloudpractitioner/App/frontend/build/
             BUCKET=$(aws s3 ls | sort -r | awk 'NR ==1 { print $3 }')
             aws s3 sync . s3://$BUCKET
             
@@ -395,7 +395,7 @@ Resources:
             EOF
                         
             #Instalación del Backend
-            cd /opt/crud-aws/backend/
+            cd /opt/aws-cloudpractitioner/App/backend/
             npm install
             npm start &
             
