@@ -53,3 +53,8 @@
 <img src="images/lab04_05.jpg">
 
 
+
+---
+### B - Crear Alarma de Status Check "Instances Status Checks"
+
+<br>
