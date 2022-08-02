@@ -1,0 +1,146 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'lab-cloudfront-v1.0.0'
+
+
+Parameters:
+  S3BucketName:
+    Type: String
+    Default: Your S3 Bucket Name
+    Description: Name of existing S3 bucket
+
+  OAIEnabled:
+    Type: String
+    Default: "no"
+    AllowedValues: ["yes", "no"]
+    Description: Enable OAI (Access to bucket only through CloudFront)
+
+Conditions:
+  WithOAIEnabled: !Equals [!Ref "OAIEnabled", "yes"]
+  WithOutOAIEnabled: !Equals [!Ref "OAIEnabled", "no"]
+
+Resources:
+  S3BucketPolicyWithAOI:
+    Metadata:
+      Comment: 'Bucket policy to allow cloudfront to access the data'
+    Properties:
+      Bucket: !Ref S3BucketName
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 's3:GetObject'
+            Effect: 'Allow'
+            Principal:
+              CanonicalUser: !GetAtt CfOriginAccessIdentity.S3CanonicalUserId
+            Resource:
+              - !Sub 'arn:aws:s3:::${S3BucketName}/*'
+    Type: 'AWS::S3::BucketPolicy'
+    Condition: WithOAIEnabled
+
+  CfDistribution:
+    Type: "AWS::CloudFront::Distribution"
+    Condition: WithOutOAIEnabled
+    Metadata:
+      Comment: 'A CloudFront distribution with an S3 origin'
+    Properties:
+      DistributionConfig:
+        Comment: 'A distribution with an S3 origin'
+        DefaultCacheBehavior:
+          AllowedMethods:
+            - 'HEAD'
+            - 'GET'
+          CachedMethods:
+            - 'HEAD'
+            - 'GET'
+          Compress: false
+          DefaultTTL: 86400
+          ForwardedValues:
+            Cookies:
+              Forward: 'none'
+            Headers:
+              - 'Origin'
+            QueryString: false
+          MaxTTL: 31536000
+          MinTTL: 86400
+          TargetOriginId: !Sub 's3-origin-${S3BucketName}'
+          ViewerProtocolPolicy: 'allow-all'  
+#         ViewerProtocolPolicy: 'redirect-to-https'
+        DefaultRootObject: 'index.html'
+        Enabled: true
+        HttpVersion: 'http1.1'
+        IPV6Enabled: false
+        Origins:
+          - DomainName: !Sub '${S3BucketName}.s3.amazonaws.com'
+            Id: !Sub 's3-origin-${S3BucketName}'
+            S3OriginConfig: {}
+        PriceClass: 'PriceClass_All'
+
+
+  CfDistributionWithAOI:
+    Type: "AWS::CloudFront::Distribution"
+    Condition: WithOAIEnabled
+    Metadata:
+      Comment: 'A CloudFront distribution with an S3 origin'
+    Properties:
+      DistributionConfig:
+        Comment: 'A distribution with an S3 origin'
+        DefaultCacheBehavior:
+          AllowedMethods:
+            - 'HEAD'
+            - 'GET'
+          CachedMethods:
+            - 'HEAD'
+            - 'GET'
+          Compress: false
+          DefaultTTL: 86400
+          ForwardedValues:
+            Cookies:
+              Forward: 'none'
+            Headers:
+              - 'Origin'
+            QueryString: false
+          MaxTTL: 31536000
+          MinTTL: 86400
+          TargetOriginId: !Sub 's3-origin-${S3BucketName}'
+          ViewerProtocolPolicy: 'allow-all'  
+#         ViewerProtocolPolicy: 'redirect-to-https'
+        DefaultRootObject: 'index.html'
+        Enabled: true
+        HttpVersion: 'http1.1'
+        IPV6Enabled: false
+        Origins:
+          - DomainName: !Sub '${S3BucketName}.s3.amazonaws.com'
+            Id: !Sub 's3-origin-${S3BucketName}'
+            OriginPath: ''
+            S3OriginConfig:
+              OriginAccessIdentity: !Sub 'origin-access-identity/cloudfront/${CfOriginAccessIdentity}'
+        PriceClass: 'PriceClass_All'
+
+  CfOriginAccessIdentity:
+    Type: "AWS::CloudFront::CloudFrontOriginAccessIdentity"
+    Condition: WithOAIEnabled
+    Metadata:
+      Comment: 'Access S3 bucket content only through CloudFront'
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: 'Access S3 bucket content only through CloudFront'
+
+Outputs:
+  S3BucketName:
+    Description: 'Bucket name'
+    Value: !Ref S3BucketName
+  CfDistributionWithOAI:
+    Description: 'Id for our cloudfront distribution'
+    Value: !Ref CfDistributionWithAOI
+    Condition: WithOAIEnabled
+  CfDistributionId:
+    Description: 'Id for our cloudfront distribution'
+    Value: !Ref CfDistribution
+    Condition: WithOutOAIEnabled
+  CfDistributionDomainNameWithOAI:
+    Description: 'Domain name for our cloudfront distribution'
+    Value: !GetAtt CfDistributionWithAOI.DomainName
+    Condition: WithOAIEnabled
+  CfDistributionDomainName:
+    Description: 'Domain name for our cloudfront distribution'
+    Value: !GetAtt CfDistribution.DomainName
+    Condition: WithOutOAIEnabled

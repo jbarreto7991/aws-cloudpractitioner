@@ -1,0 +1,75 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'lab-cloudwatch-alarma-asg-v1.0.0'
+
+
+Resources:
+
+  AutoScalingAppScaleUpPolicy:
+    Type: AWS::AutoScaling::ScalingPolicy
+    Properties:
+      AdjustmentType: ChangeInCapacity
+      AutoScalingGroupName: !ImportValue EC2AutoScalingGroup
+      Cooldown: 60
+      ScalingAdjustment: 1
+
+  AutoScalingAppScaleDownPolicy:
+    Type: AWS::AutoScaling::ScalingPolicy
+    Properties:
+      AdjustmentType: ChangeInCapacity
+      AutoScalingGroupName: !ImportValue EC2AutoScalingGroup
+      Cooldown: 60
+      ScalingAdjustment: -1
+  
+  CloudWatchCPUAlarmHigh:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: Scale-up if CPU > 75% for 2 period to 2 minutes
+      MetricName: CPUUtilization
+      Namespace: AWS/EC2
+      Statistic: Average
+      Period: 60
+      EvaluationPeriods: 2
+      Threshold: 75
+      AlarmActions: [!Ref AutoScalingAppScaleUpPolicy]
+      Dimensions:
+      - Name: AutoScalingGroupName
+        Value: !ImportValue EC2AutoScalingGroup
+      ComparisonOperator: GreaterThanThreshold
+
+  CloudWatchCPUAlarmLow:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: Scale-down if CPU < 30% for 2 period to 2 minutes
+      MetricName: CPUUtilization
+      Namespace: AWS/EC2
+      Statistic: Average
+      Period: 60
+      EvaluationPeriods: 2
+      Threshold: 30
+      AlarmActions: [!Ref AutoScalingAppScaleDownPolicy]
+      Dimensions:
+      - Name: AutoScalingGroupName
+        Value: !ImportValue EC2AutoScalingGroup
+      ComparisonOperator: LessThanThreshold
+
+Outputs: 
+
+  AutoScalingAppScaleUpPolicy: 
+    Value: !Ref AutoScalingAppScaleUpPolicy
+    Export:
+      Name: AutoScalingAppScaleUpPolicy
+
+  AutoScalingAppScaleDownPolicy: 
+    Value: !Ref AutoScalingAppScaleDownPolicy
+    Export:
+      Name: AutoScalingAppScaleDownPolicy
+
+  CloudWatchCPUAlarmHigh: 
+    Value: !Ref CloudWatchCPUAlarmHigh
+    Export:
+      Name: CloudWatchCPUAlarmHigh
+
+  CloudWatchCPUAlarmLow: 
+    Value: !Ref CloudWatchCPUAlarmLow
+    Export:
+      Name: CloudWatchCPUAlarmLow

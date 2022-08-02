@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'lab_sns-v1.0.0'
+
+
+Parameters:
+
+  SNSSubscription: 
+     Description: The SNS Subscription
+     Type: String
+     Default: "example@gmail.com"
+
+Resources:
+
+#Creacion del recurso de SNS
+
+  SNSNotificationTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: SNSNotificationTopic
+      TopicName: SNSNotificationTopic
+      Subscription:
+       - Endpoint: !Ref SNSSubscription 
+         Protocol: email
+   
+Outputs: 
+
+  SNSNotificationTopic: 
+    Value: !Ref SNSNotificationTopic
+    Export:
+      Name: SNSNotificationTopic

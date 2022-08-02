@@ -1,8 +1,8 @@
-# AWS Cloud Practitioner - Laboratorio 04 
+# AWS Cloud Practitioner - Laboratorio 06
 
 ### Objetivo: 
 * Interactuar con el servicio AWS CloudFormation
-* Identificar características de los siguientes servicios de AWS: EC2, S3 y VPC
+* Identificar características de los siguientes servicios de AWS: VPC, RDS, Secret Manager, EFS, EC2, S3, ALB, Cloud9, EC2 AutoScaling Group, SNS, CloudWatch, CloudFront
 
 ---
 
@@ -11,16 +11,52 @@
 
 1. Debemos tener una llave Key Pair disponible. De no ser así, acceder al servicio EC2 y luego a la opción "Key Pair". Generar llave RSA y .pem 
 
-2. Acceder al servicio AWS CloudFormation y dar clic en el botón "Create Stack"
+2. Acceder al servicio AWS Cloud9 y dar clic en el botón "Create environment"
 
-<img src="images/lab04_01.jpg">
+<img src="images/lab06_01.jpg">
 <br>
 
-3. Seleccionar las opciones "Template is ready" y "Upload a template file". Luego, buscar el archivo "lab04_cloudformation_s3_ec2_db.yaml" y subirlo a AWS CloudFormation (El template se encuentra en: https://github.com/jbarreto7991/aws-cloudpractitioner/blob/main/Lab-04/code/lab04_cloudformation_s3_ec2_db.yaml). Dar clic en el botón "Next"  
+3. Ingresar "nombre" y "descripción". Dar clic en el botón "Next step"
 
-<img src="images/lab04_02.jpg">
+<img src="images/lab06_02.jpg">
 <br>
+
+4. Dejar los valores por defecto. En la sección "Platform" seleccionar "Ubuntu 18.04 TLS". Dar clic en "Next Step"
+
+<img src="images/lab06_03.jpg">
 <br>
+
+5. Revisar los valores previamente seleccionados. De estar todo correcto dar clic en el botón "Create enviroment"
+
+6. Esperar unos minutos mientras el ambiente carga.
+
+
+<img src="images/lab06_04.jpg">
+<br>
+<img src="images/lab06_05.jpg">
+<br>
+
+7. Ejecutar los siguinentes comandos
+
+
+```bash
+#Ubuntu 18.04
+sudo apt-get update
+git clone https://github.com/jbarreto7991/aws-cloudpractitioner.git
+```
+
+<img src="images/lab06_06.jpg">
+<br>
+
+8. Acceder al laboratorio 06. 
+
+
+
+
+
+
+
+
 
 4. Ingresar los siguientes datos en la sección "Stack name"
 * Stack name: Lab04

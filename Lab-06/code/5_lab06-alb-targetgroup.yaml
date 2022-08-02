@@ -1,0 +1,126 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'lab-alb-targetgroup-v1.0.0'
+
+
+Resources:
+  
+#Creacion del Recurso Application Load Balancer (ALB)
+
+  EC2ApplicationLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties: 
+        IpAddressType: ipv4
+        Name: EC2ApplicationLoadBalancer
+        Scheme: internet-facing
+        SecurityGroups: 
+          - !Ref EC2SecurityGroupALBConnection
+        Subnets: 
+          - !ImportValue VpcSubnetPublicAZa
+          - !ImportValue VpcSubnetPublicAZb
+        Tags:
+          - Key: Name
+            Value: 'ALB'
+          - Key: Enviroment
+            Value: PROD
+        Type: application 
+
+
+  EC2SecurityGroupALBConnection:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+        GroupDescription: 'Allow http and https traffic' 
+        VpcId: !ImportValue Vpc
+        SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+        SecurityGroupEgress:
+        - IpProtocol: -1
+          FromPort: -1
+          ToPort: -1
+          CidrIp: 0.0.0.0/0
+
+#Creacion del Recurso Listener HTTP de AutoScaling
+
+  EC2ALBListenerApp01:
+    Type: 'AWS::ElasticLoadBalancingV2::Listener'
+    Properties:
+      DefaultActions:    
+        - Type: forward
+          TargetGroupArn: !Ref EC2LoadBalancerTargetGroupApp
+      LoadBalancerArn: !Ref EC2ApplicationLoadBalancer
+      Port: 80
+      Protocol: HTTP
+
+#Creacion del Recurso Listener HTTPS de AutoScaling
+
+#  EC2ALBListenerAppHTTPS01:
+#   Type: "AWS::ElasticLoadBalancingV2::Listener"
+#   Properties:
+#     DefaultActions:
+#        - Type: forward
+#          TargetGroupArn: !Ref EC2LoadBalancerTargetGroupApp
+#     LoadBalancerArn: !Ref EC2ApplicationLoadBalancer
+#     Certificates:
+#     #Certificado SSL del dominio 
+#        - CertificateArn: ARN_DEL_CERTIFICADO_01
+#     Port: 443
+#     Protocol: "HTTPS"
+#     SslPolicy: ELBSecurityPolicy-TLS-1-1-2017-01
+
+# EC2ALBListenerAppHTTPS02:
+#  Type: "AWS::ElasticLoadBalancingV2::ListenerCertificate"
+#  Properties:
+#    Certificates:
+#    #Certificado SSL del dominio	
+#       - CertificateArn: ARN_DEL_CERTIFICADO_02      
+#    ListenerArn: !Ref EC2ALBListenerAppHTTPS01
+
+#  EC2ALBListenerAppHTTPS03:
+#   Type: "AWS::ElasticLoadBalancingV2::ListenerCertificate"
+#   Properties:
+#     Certificates:
+#     #Certificado SSL del dominio
+#        - CertificateArn: ARN_DEL_CERTIFICADO_03           
+#     ListenerArn: !Ref EC2ALBListenerAppHTTPS01
+
+
+#Creacion del Recurso Target Group
+
+  EC2LoadBalancerTargetGroupApp:
+    Type: 'AWS::ElasticLoadBalancingV2::TargetGroup'
+    Properties:
+      Name: EC2LoadBalancerTargetGroupApp
+      TargetType: instance
+      HealthCheckIntervalSeconds: 5
+      HealthCheckPath: '/v1/api/tasks/'
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 2
+      HealthyThresholdCount: 3
+      UnhealthyThresholdCount: 2
+      Matcher:
+        HttpCode: '200'
+      Port: 80
+      Protocol: HTTP
+      VpcId: !ImportValue Vpc
+      TargetGroupAttributes:
+      - Key: deregistration_delay.timeout_seconds
+        Value: 10
+
+
+Outputs: 
+
+  EC2ApplicationLoadBalancer: 
+    Value: !Ref EC2ApplicationLoadBalancer
+    Export:
+      Name: EC2ApplicationLoadBalancer
+
+  EC2LoadBalancerTargetGroupApp: 
+    Value: !Ref EC2LoadBalancerTargetGroupApp
+    Export:
+      Name: EC2LoadBalancerTargetGroupApp

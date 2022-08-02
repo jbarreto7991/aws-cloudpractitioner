@@ -1,0 +1,53 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'lab-autoscaling-asg-v1.0.0'
+
+
+Resources:
+
+#Creacion del Recurso AutoScalingGroup
+
+  EC2AutoScalingGroup:
+    Type: 'AWS::AutoScaling::AutoScalingGroup'
+#    DependsOn: 
+#      - SNSNotificationTopic
+    Properties:
+      TargetGroupARNs:
+      - !ImportValue EC2LoadBalancerTargetGroupApp
+      LaunchConfigurationName: !ImportValue EC2LaunchConfiguration
+      MinSize: 2
+      MaxSize: 5
+      DesiredCapacity: 2
+      Cooldown: 30
+      HealthCheckGracePeriod: 10
+#      HealthCheckType: ELB
+      NotificationConfigurations: 
+      - TopicARN: !ImportValue SNSNotificationTopic 
+        NotificationTypes: 
+         - autoscaling:EC2_INSTANCE_LAUNCH
+         - autoscaling:EC2_INSTANCE_LAUNCH_ERROR
+#         - autoscaling:EC2_INSTANCE_TERMINATE
+#         - autoscaling:EC2_INSTANCE_TERMINATE_ERROR
+#         - autoscaling:TEST_NOTIFICATION  
+      VPCZoneIdentifier:
+      - !ImportValue VpcSubnetPrivateAZa
+      - !ImportValue VpcSubnetPrivateAZb
+      TerminationPolicies: 
+#      - Default
+#      - OldestInstance
+#      - OldestLaunchConfiguration
+      - NewestInstance
+#      - ClosestToNextInstanceHour
+#      - OldestLaunchTemplate
+#      - AllocationStrategy
+      Tags:
+      - Key: Name
+        PropagateAtLaunch: true
+        Value: 'ASG EC2 BACKEND'
+
+
+Outputs: 
+
+  EC2AutoScalingGroup: 
+    Value: !Ref EC2AutoScalingGroup
+    Export:
+      Name: EC2AutoScalingGroup

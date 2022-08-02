@@ -1,0 +1,46 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'lab_autoscaling_launchconfiguration-v1.0.0'
+
+Parameters:
+
+  InstancesFamily: 
+     Description: The Instances Family
+     Type: CommaDelimitedList
+     Default: "t2.micro,t2.medium,t2.large,t2.xlarge"
+
+  AmiInstances:
+     Description: "Seleccionar el ID del AMI a desplegar"
+     Type: AWS::EC2::Image::Id 
+  
+  KeyPair: 
+     Description: "Seleccionar el nombre de un Key Pair"
+     Type: AWS::EC2::KeyPair::KeyName
+
+  LaunchConfigurationName:
+     Description: "Ingresar el nombre del launch configuration"
+     Default: "aplication"
+     Type: String  
+  
+Resources:
+
+  EC2LaunchConfiguration:
+    Type: 'AWS::AutoScaling::LaunchConfiguration'
+    Properties:
+      LaunchConfigurationName: EC2LaunchConfiguration
+      InstanceType: !Select [ 0, !Ref InstancesFamily]
+      ImageId: !Ref AmiInstances
+      IamInstanceProfile: !ImportValue BackendIAMServerProfile
+      KeyName: !Ref KeyPair
+      LaunchConfigurationName: !Ref LaunchConfigurationName
+      SecurityGroups:
+      - !ImportValue EC2SecurityWeb
+
+
+Outputs: 
+
+  EC2LaunchConfiguration: 
+    Value: !Ref EC2LaunchConfiguration
+    Export:
+      Name: EC2LaunchConfiguration
+
+      

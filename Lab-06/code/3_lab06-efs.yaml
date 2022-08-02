@@ -1,0 +1,60 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'lab-efs-v1.0.0'
+
+Resources:
+  EFSSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+        GroupDescription: 'Security group for the EFS'
+        VpcId: !ImportValue Vpc
+        SecurityGroupIngress: 
+            - IpProtocol: tcp
+              FromPort: 2049
+              ToPort: 2049
+              CidrIp: !ImportValue VpcCidrBlock
+
+  EFSFileSystem:
+    Type: AWS::EFS::FileSystem
+    Properties:
+        BackupPolicy:
+          Status: ENABLED
+        Encrypted: true
+        LifecyclePolicies:
+            - TransitionToIA: AFTER_60_DAYS
+        PerformanceMode: generalPurpose
+        Encrypted: true
+        ThroughputMode: bursting
+  
+  EFSMountTarget1:
+    Type: AWS::EFS::MountTarget
+    Properties: 
+        FileSystemId: !Ref EFSFileSystem
+#        IpAddress: *.*.*.*
+        SecurityGroups: 
+            - !Ref EFSSecurityGroup
+        SubnetId: !ImportValue VpcSubnetDatabaseAZa
+  
+  EFSMountTarget2:
+    Type: AWS::EFS::MountTarget
+    Properties: 
+        FileSystemId: !Ref EFSFileSystem
+#       IpAddress: *.*.*.*
+        SecurityGroups: 
+            - !Ref EFSSecurityGroup
+        SubnetId: !ImportValue VpcSubnetDatabaseAZb
+  
+  
+Outputs:
+
+  EFSFileSystem:
+    Value: !Ref EFSFileSystem
+    Export:
+      Name: !Sub "EFSFileSystem"
+  EFSMountTarget1:
+    Value: !Ref EFSMountTarget1
+    Export:
+      Name: !Sub "EFSMountTarget1"
+  EFSMountTarget2:
+    Value: !Ref EFSMountTarget2
+    Export:
+      Name: !Sub "EFSMountTarget2"
