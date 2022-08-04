@@ -56,7 +56,7 @@ git clone https://github.com/jbarreto7991/aws-cloudpractitioner.git
 9. Desplegar cada plantilla CloudFormation ejecutando AWSCLI. Considerar los parámetros a ser ingresados.
 
     <br>
-10. **1_lab06-vpc.yaml**. En la sección "ParameterValue", ingresar el nombre del KeyPair creado en el paso 1. Esta plantilla creará la VPC "192.168.0.0/16" Y 06 Subnets dentro de este CIDR. No deberán existir redes existentes en este rango de IPs. Validar la creación del Stack desde la consola AWS a través del servicio AWS CloudFormation. Analizar el servicio **VPC** y el diagrama de arquitectura facilitado. El siguiente comando considera el valor "cloud-practitioner" para el KeyPair, reemplazar el nombre según la llave respectiva.
+10. **1_lab06-vpc.yaml** (Esperar el despliegue total de esta plantilla cloudformation para continuar con las demás plantillas). En la sección "ParameterValue", ingresar el nombre del KeyPair creado en el paso 1. Esta plantilla creará la VPC "192.168.0.0/16" Y 06 Subnets dentro de este CIDR. No deberán existir redes existentes en este rango de IPs. Validar la creación del Stack desde la consola AWS a través del servicio AWS CloudFormation. Analizar el servicio **VPC** y el diagrama de arquitectura facilitado. El siguiente comando considera el valor "cloud-practitioner" para el KeyPair, reemplazar el nombre según la llave respectiva.
 
 ```bash
 aws cloudformation create-stack --stack-name lab06-vpc --template-body file://~/environment/aws-cloudpractitioner/Lab-06/code/1_lab06-vpc.yaml --parameters ParameterKey=KeyPair,ParameterValue="cloud-practitioner" --capabilities CAPABILITY_IAM
@@ -68,7 +68,7 @@ aws cloudformation create-stack --stack-name lab06-vpc --template-body file://~/
 <img src="images/lab06_09.jpg">
 <br>
 
-11. **2_lab06-secretmanager-rds.yaml**. La plantilla solicita el ingreso de 3 parámetros. Se considera el uso de los valores por defecto para estos parámetros. Analizar el servicio **Secret Manager** y **RDS** y el diagrama de arquitectura facilitado. Esta plantilla tomará varios minutos en su despliegue debido al aprovisionamiento de la base de datos.
+11. **2_lab06-secretmanager-rds.yaml** (Esta y la siguiente plantilla se podrán desplegar de forma paralela). La plantilla solicita el ingreso de 3 parámetros. Se considera el uso de los valores por defecto para estos parámetros. Analizar el servicio **Secret Manager** y **RDS** y el diagrama de arquitectura facilitado. Esta plantilla tomará varios minutos en su despliegue debido al aprovisionamiento de la base de datos.
 
 ```bash
 aws cloudformation create-stack --stack-name lab06-secretmanager-rds --template-body file://~/environment/aws-cloudpractitioner/Lab-06/code/2_lab06-secretmanager-rds.yaml 
@@ -76,7 +76,7 @@ aws cloudformation create-stack --stack-name lab06-secretmanager-rds --template-
    
 <br>
 
-12. **3_lab06-efs.yaml**. La plantilla no tiene parámetros. Analizar el servicio de **EFS** y el diagrama de arquitectura facilitado.
+12. **3_lab06-efs.yaml** (Esta y la anterior plantilla se podrán desplegar de forma paralela). La plantilla no tiene parámetros. Analizar el servicio de **EFS** y el diagrama de arquitectura facilitado.
 
 ```bash
 aws cloudformation create-stack --stack-name lab06-efs --template-body file://~/environment/aws-cloudpractitioner/Lab-06/code/3_lab06-efs.yaml 
@@ -84,7 +84,7 @@ aws cloudformation create-stack --stack-name lab06-efs --template-body file://~/
 
 <br>
 
-13. **4_lab06-ec2-s3.yaml**. La plantilla tiene 3 parámetros, 2 son obligatorios: "KeyPair" (Llave creada en el paso 01) y "S3BucketName" (Nombre del Bucket a crear, el nombre debe ser único a nivel mundial. Se recomienda usar el patrón nombre-apellido-cloud-practitioner). Analizar los servicios **EC2** y **S3** y el diagrama de arquitectura facilitado. Esperar unos minutos mientras la aplicación se despliega. El siguiente comando considera el valor "cloud-practitioner" para el KeyPair y el valor "jorge-barreto-cloud-practitioner" para el S3BucketName. reemplazar según sea conveniente.
+13. **4_lab06-ec2-s3.yaml**  (Esta plantilla necesita que la plantilla 2_lab06-secretmanager-rds.yaml finalice su despliegue. Esta y la siguiente plantilla se podrán desplegar de forma paralela). La plantilla tiene 3 parámetros, 2 son obligatorios: "KeyPair" (Llave creada en el paso 01) y "S3BucketName" (Nombre del Bucket a crear, el nombre debe ser único a nivel mundial. Se recomienda usar el patrón nombre-apellido-cloud-practitioner). Analizar los servicios **EC2** y **S3** y el diagrama de arquitectura facilitado. Esperar unos minutos mientras la aplicación se despliega. El siguiente comando considera el valor "cloud-practitioner" para el KeyPair y el valor "jorge-barreto-cloud-practitioner" para el S3BucketName. reemplazar según sea conveniente.
 
 ```bash
 aws cloudformation create-stack --stack-name lab06-ec2-s3 --template-body file://~/environment/aws-cloudpractitioner/Lab-06/code/4_lab06-ec2-s3.yaml --parameters ParameterKey=KeyPair,ParameterValue="cloud-practitioner" ParameterKey=S3BucketName,ParameterValue="jorge-barreto-cloud-practitioner" --capabilities CAPABILITY_IAM
@@ -92,7 +92,7 @@ aws cloudformation create-stack --stack-name lab06-ec2-s3 --template-body file:/
 
 <br>
 
-14. **5_lab06-alb-targetgroup.yaml**. La plantilla no tiene parámetros. Analizar los features del servicio EC2 **ALB (Application Load Balancer), Target Group y Listener** y el diagrama de arquitectura facilitado.
+14. **5_lab06-alb-targetgroup.yaml**  (Esta y la anterior plantilla se podrán desplegar de forma paralela). La plantilla no tiene parámetros. Analizar los features del servicio EC2 **ALB (Application Load Balancer), Target Group y Listener** y el diagrama de arquitectura facilitado.
 
 ```bash
 aws cloudformation create-stack --stack-name lab06-alb-targetgroup --template-body file://~/environment/aws-cloudpractitioner/Lab-06/code/5_lab06-alb-targetgroup.yaml
@@ -145,7 +145,7 @@ aws elbv2 register-targets --target-group-arn $TARGETGROUP_ARN --targets Id=$INS
 <br>
 
 
-16. **6_lab06-alb-autoscaling-launchconfiguration.yaml**. La plantilla tiene 4 parámetros, 2 de ellos son obligatorios: "Key Pair" y "AmiInstances". Respecto a "Key Pair" ingresar el valor detallado en el paso 1. Sobre el parámetro "AmiInstances" ir a la sección AMIs de EC2 y copiar el valor del campo "AMI ID" o ejecutar el primer comando AWSCLI mostrado a continuación. Analizar los features del servicio EC2 **Launch Configuration de la sección Auto Scaling en EC2** y el diagrama de arquitectura facilitado. El siguiente comando considera el valor "cloud-practitioner" para el KeyPair y el valor "ami-0cc9a640553205d60" para el AmiInstances. Reemplazar según sea conveniente.
+16. **6_lab06-alb-autoscaling-launchconfiguration.yaml** (Esta plantilla necesita que la AMI generada desde la plantilla 4_lab06-ec2-s3.yaml finalice su creación, además de finalizar el despliegue de las plantillas anteriores. Esta y la siguiente plantilla se podrán desplegar de forma paralela). La plantilla tiene 4 parámetros, 2 de ellos son obligatorios: "Key Pair" y "AmiInstances". Respecto a "Key Pair" ingresar el valor detallado en el paso 1. Sobre el parámetro "AmiInstances" ir a la sección AMIs de EC2 y copiar el valor del campo "AMI ID" o ejecutar el primer comando AWSCLI mostrado a continuación. Analizar los features del servicio EC2 **Launch Configuration de la sección Auto Scaling en EC2** y el diagrama de arquitectura facilitado. El siguiente comando considera el valor "cloud-practitioner" para el KeyPair y el valor "ami-0cc9a640553205d60" para el AmiInstances. Reemplazar según sea conveniente.
 
 <img src="images/lab06_12.jpg">
 <br>
@@ -209,13 +209,13 @@ aws cloudformation create-stack --stack-name lab06-autoscaling-launchconfigurati
 ```
 
 
-17. **7_lab06-sns.yaml**. La plantilla tiene 1 parámetro y este es obligatorio: "SNSSubscription". Ingresar el correo electrónico donde llegarán diferentes tipos de alertas. Una vez ingresado, AWS enviará un correo electrónico a la dirección ingresada con el objetivo de activar la subscripción. Analizar el servicio **SNS** y el diagrama de arquitectura facilitado. El siguiente comando considera el valor "example@domain.com" para el SNSSubscription. Reemplazar según sea conveniente.
+17. **7_lab06-sns.yaml**  (Esta y la anterior plantilla se podrán desplegar de forma paralela). La plantilla tiene 1 parámetro y este es obligatorio: "SNSSubscription". Ingresar el correo electrónico donde llegarán diferentes tipos de alertas. Una vez ingresado, AWS enviará un correo electrónico a la dirección ingresada con el objetivo de activar la subscripción. Analizar el servicio **SNS** y el diagrama de arquitectura facilitado. El siguiente comando considera el valor "example@domain.com" para el SNSSubscription. Reemplazar según sea conveniente.
 
 ```bash
 aws cloudformation create-stack --stack-name lab06-sns --template-body file://~/environment/aws-cloudpractitioner/Lab-06/code/7_lab06-sns.yaml --parameters ParameterKey=SNSSubscription,ParameterValue="example@domain.com"
 ```
 
-18. **8_lab06-autoscaling-asg.yaml**. La plantilla no tiene parámetros. Analizar el features **EC2 AutoScaling Group** y el diagrama de arquitectura facilitado.
+18. **8_lab06-autoscaling-asg.yaml**  (Esta plantilla necesitará que las anteriores plantillas hayan terminado su despliegue). La plantilla no tiene parámetros. Analizar el features **EC2 AutoScaling Group** y el diagrama de arquitectura facilitado.
 
 ```bash
 aws cloudformation create-stack --stack-name lab06-autoscaling-asg --template-body file://~/environment/aws-cloudpractitioner/Lab-06/code/8_lab06-autoscaling-asg.yaml
@@ -270,7 +270,7 @@ sudo lsof -t -i:80
 ```
 
 
-21. **9_lab06-cloudwatch-alarm-asg.yaml**. La plantilla no tiene parámetros. Analizar el servicio **CloudWatch** y el diagrama de arquitectura facilitado.
+21. **9_lab06-cloudwatch-alarm-asg.yaml** (Esta plantilla necesitará que las demás plantillas se hayan desplegado en su totalidad. Se podrá desplegar de forma paralela con la siguiente plantilla). La plantilla no tiene parámetros. Analizar el servicio **CloudWatch** y el diagrama de arquitectura facilitado.
 
 ```bash
 aws cloudformation create-stack --stack-name lab06-cloudwatch-alarm-asg --template-body file://~/environment/aws-cloudpractitioner/Lab-06/code/9_lab06-cloudwatch-alarm-asg.yaml
@@ -302,7 +302,7 @@ stress -c 4
 <br>
 
 
-23. **10_lab06-cloudfront.yaml**. La plantilla tiene dos parámetros de los cuales ambos son obligatorios. El parámetro "OAIEnabled" será asignado en "yes" y el parámetro "S3BucketName" será el nombre del bucket creado en el paso 13. Analizar el servicio **CloudFront** y la nueva política asignada al bucket **S3**, además de revisarel diagrama de arquitectura facilitado.
+23. **10_lab06-cloudfront.yaml** (Esta plantilla necesitará que las demás plantillas se hayan desplegado en su totalidad. Se podrá desplegar de forma paralela con la anterior plantilla, pero por un tema metodológico se remienda su despliegue de forma aislada). La plantilla tiene dos parámetros de los cuales ambos son obligatorios. El parámetro "OAIEnabled" será asignado en "yes" y el parámetro "S3BucketName" será el nombre del bucket creado en el paso 13. Analizar el servicio **CloudFront** y la nueva política asignada al bucket **S3**, además de revisarel diagrama de arquitectura facilitado.
 
 ```bash
 BUCKET=$(aws s3 ls | sort -r | awk 'NR ==1 { print $3 }')
