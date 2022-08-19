@@ -2,7 +2,7 @@
 
 ### Objetivo: 
 * Interactuar con el servicio AWS CloudFormation
-* Identificar características de los siguientes servicios de AWS: EC2, S3 y VPC
+* Identificar características de los siguientes servicios de AWS: EC2, EBS, S3 y VPC
 
 ---
 
@@ -31,7 +31,7 @@
 
 * InstancesFamily: Dejar valores por defecto. La instancia EC2 tomará el primer valor de esta lista.
 * KeyPair: Seleccionar llave indicada en el paso 1
-* S3BucketName: Ingresar un valor único a nivel global. Se recomienda la estructura: nombre-apellido.aws-cloudpractitioner
+* S3BucketName: Ingresar un valor único a nivel global. Se recomienda la estructura: nombre-apellido-aws-cloudpractitioner
 * SubnetCIDR1: Dejar valor por defecto
 * SubnetCIDR2: Dejar valor por defecto
 * VPCCIDR: Dejar valor por defecto. De tener una VPC con CIDR 192.168.0.0/16, modificar valor CIDR por uno donde no exista el solapamiento de redes. Las SubnetCIDR1 y SubnetCIDR2 deben formar parte del VPCCIDR.
