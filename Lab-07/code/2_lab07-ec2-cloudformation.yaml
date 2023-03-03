@@ -1,0 +1,57 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: '2_lab07-ec2-cloudformation'
+
+#Pre-requisitos
+#Crear una "VPC" y una "Subnet"
+#Crear un "Security Group"
+#Crear un "Key Pair"
+#Crear un "Instances Profile"
+
+
+Parameters:
+
+  ImageId:
+     Description: "Select ImageId"
+     Type: AWS::EC2::Image::Id
+  
+  InstancesFamily: 
+     Description: "Select InstancesFamily"
+     Type: CommaDelimitedList
+     Default: "t2.micro,t2.medium,t2.large,t2.xlarge"
+     
+  SubnetId:
+    Description: "Select SubnetId"
+    Type: AWS::EC2::Subnet::Id
+
+  SecurityGroupId:
+    Description: "Select SecurityGroupId"
+    Type: AWS::EC2::SecurityGroup::Id
+
+  KeyPair: 
+     Description: "Select KeyPair"
+     Type: AWS::EC2::KeyPair::KeyName
+
+  InstancesProfile:
+     Default: "dev-ec2"
+     Description: "Put InstancesProfile name"
+     Type: String
+
+
+Resources:
+
+# Creación del recurso EC2 Instances
+
+  EC2InstanceCloudFormation:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Select [0, !Ref InstancesFamily]
+      ImageId:  !Ref ImageId
+      IamInstanceProfile: !Ref InstancesProfile
+      KeyName: !Ref KeyPair
+      SecurityGroupIds: 
+        - !Ref SecurityGroupId
+      SourceDestCheck: true
+      SubnetId: !Ref SubnetId
+      Tags:
+      - Key: Name
+        Value: 'team-cf-demo-dev-ec2-cloudformation'

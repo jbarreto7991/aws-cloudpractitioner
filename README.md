@@ -24,3 +24,6 @@ Este repositorio tiene por objetivo desarrollar laboratorios complementarios al 
 #### **Laboratorio 06:** [README-Lab06.md](https://github.com/jbarreto7991/aws-cloudpractitioner/blob/main/Lab-06/README-Lab06.md)
 * Interactuar con el servicio AWS CloudFormation
 * Identificar características de los siguientes servicios de AWS: VPC, RDS, Secret Manager, EFS, EC2, S3, ALB, Cloud9, EC2 AutoScaling Group, SNS, CloudWatch, CloudFront
+#### **Laboratorio 07:** [README-Lab07.md](https://github.com/jbarreto7991/aws-cloudpractitioner/blob/main/Lab-07/README-Lab07.md)
+* Interactuar con las APIs de AWS a través de la consola, awscli, IaC y SDK
+* Interactuar con las APIs de AWS de forma privada
