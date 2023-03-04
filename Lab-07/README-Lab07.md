@@ -407,9 +407,6 @@ response = ec2_client.run_instances(
 <br>
 
 
-pip3 install --upgrade awscli
-
-
 
 ---
 
