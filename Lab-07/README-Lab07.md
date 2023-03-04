@@ -362,7 +362,7 @@ pip3 install boto3
 
 <br>
 
-20. Ejecutamos python3 y los siguientes comandos
+20. Ejecutamos python3 y los siguientes comandos. Usar la plantilla y reemplazar las variables KEY_NAME, SECURITY_GROUPS_ID y SUBNET_ID
 
 ```bash
 python3
@@ -373,6 +373,34 @@ python3
 import boto3
 ec2_client = boto3.client('ec2',region_name='us-east-1')
 
+#Plantilla
+response = ec2_client.run_instances(
+    ImageId='ami-0263e4deb427da90e',
+    InstanceType='t2.micro',
+    KeyName='{$KEY_NAME}',
+    MaxCount=1,
+    MinCount=1,
+    SecurityGroupIds=[
+        '{$SECURITY_GROUPS_ID}',
+    ],
+    SubnetId='{SUBNET_ID}',
+    IamInstanceProfile={
+        'Name': 'dev-ec2'
+    },
+    TagSpecifications=[
+        {
+            'ResourceType': 'instance',
+            'Tags': [
+                {
+                    'Key': 'Name',
+                    'Value': 'team-cf-demo-dev-ec2-sdk-boto3'
+                }
+            ]
+        }
+    ]
+)
+
+#Ejemplo
 response = ec2_client.run_instances(
     ImageId='ami-0263e4deb427da90e',
     InstanceType='t2.micro',
@@ -416,11 +444,11 @@ response = ec2_client.run_instances(
 ```bash
 #ELIMINACIÓN DE PLANTILLAS CLOUDFORMATION
 
-#Eliminar Stack "lab07-ec2-cloudformation"
+#1. Eliminar Stack "lab07-ec2-cloudformation"
 aws cloudformation delete-stack --stack-name lab07-ec2-cloudformation
 
-#Eliminamos las instancias EC2 creadas desde la consola, AWSCLI y el SDK (Boto3)
+#2. Eliminamos las instancias EC2 creadas desde la consola, AWSCLI y el SDK (Boto3)
 
-#Eliminar Stack "lab07-vpc-ec2"
+#3. Eliminar Stack "lab07-vpc-ec2"
 aws cloudformation delete-stack --stack-name lab07-vpc-ec2
 ```
