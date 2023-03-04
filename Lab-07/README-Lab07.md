@@ -375,14 +375,14 @@ ec2_client = boto3.client('ec2',region_name='us-east-1')
 
 response = ec2_client.run_instances(
     ImageId='ami-0263e4deb427da90e',
-    InstanceType='t3.micro',
+    InstanceType='t2.micro',
     KeyName='cloud-practitioner',
-    MaxCount=123,
-    MinCount=123,
+    MaxCount=1,
+    MinCount=1,
     SecurityGroupIds=[
-        'sg-031663c57114c0453',
+        'sg-0fd4afd89697e32e1',
     ],
-    SubnetId='subnet-0a1ce4ea4d18d6608',
+    SubnetId='subnet-005b0d4452cb3f856',
     IamInstanceProfile={
         'Name': 'dev-ec2'
     },
@@ -405,6 +405,10 @@ response = ec2_client.run_instances(
 21. Referencia "AWSCLI para ec2.run-instances": https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2/client/run_instances.html 
 
 <br>
+
+
+pip3 install --upgrade awscli
+
 
 
 ---
