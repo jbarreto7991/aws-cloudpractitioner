@@ -1,4 +1,4 @@
-# AWS Cloud Practitioner - Laboratorio 08
+# AWS Cloud Practitioner - Laboratorio 09
 
 ### Objetivo: 
 * Estimación de costos en AWS usando la calculadora
