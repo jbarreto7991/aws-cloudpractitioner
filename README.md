@@ -28,3 +28,5 @@ Este repositorio tiene por objetivo desarrollar laboratorios complementarios al 
 * Interactuar con las APIs de AWS a través de la consola, awscli, IaC y SDK
 #### **Laboratorio 08:** [README-Lab08.md](https://github.com/jbarreto7991/aws-cloudpractitioner/blob/main/Lab-08/README-Lab08.md)
 * Despliegue de una función Lambda usando Python y variables de entorno
+#### **Laboratorio 09:** [README-Lab09.md](https://github.com/jbarreto7991/aws-cloudpractitioner/blob/main/Lab-09/README-Lab09.md)
+* Estimación de costos en AWS usando la calculadora
