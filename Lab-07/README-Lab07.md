@@ -2,7 +2,6 @@
 
 ### Objetivo: 
 * Interactuar con las APIs de AWS a través de la consola, awscli, IaC y SDK
-* Interactuar con las APIs de AWS de forma privada
 
 ---
 
@@ -449,6 +448,6 @@ aws cloudformation delete-stack --stack-name lab07-ec2-cloudformation
 
 #2. Eliminamos las instancias EC2 creadas desde la consola, AWSCLI y el SDK (Boto3)
 
-#3. Eliminar Stack "lab07-vpc-ec2"
+#3. 76Eliminar Stack "lab07-vpc-ec2"
 aws cloudformation delete-stack --stack-name lab07-vpc-ec2
 ```
