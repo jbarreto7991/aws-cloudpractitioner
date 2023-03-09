@@ -223,3 +223,4 @@
 1. Eliminar "Trail: security-trail" en CloudTrail
 2. Eliminar "CloudWatch Logs Group: security-logs" en CloudWatch
 3. Eliminar "Tópico SNS: AWSCloudSecurity"
+4. Eliminar Bucket S3 "aws-cloudtrail-logs-*"
