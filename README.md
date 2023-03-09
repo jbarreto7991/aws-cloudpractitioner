@@ -20,7 +20,7 @@ Este repositorio tiene por objetivo desarrollar laboratorios complementarios al 
 * Interactuar con el servicio AWS CloudFormation
 * Identificar características de los siguientes servicios de AWS: EC2, S3 y VPC
 #### **Laboratorio 05:** [README-Lab05.md](https://github.com/jbarreto7991/aws-cloudpractitioner/blob/main/Lab-05/README-Lab05.md)
-* Configuración de alarma de facturación en AWS
+* Configuración de alarma de facturación en AWS vía Billing y CloudWatch Alarm
 #### **Laboratorio 06:** [README-Lab06.md](https://github.com/jbarreto7991/aws-cloudpractitioner/blob/main/Lab-06/README-Lab06.md)
 * Interactuar con el servicio AWS CloudFormation
 * Identificar características de los siguientes servicios de AWS: VPC, RDS, Secret Manager, EFS, EC2, S3, ALB, Cloud9, EC2 AutoScaling Group, SNS, CloudWatch, CloudFront
