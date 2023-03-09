@@ -66,6 +66,15 @@ https://calculator.aws/#/
 <img src="images/lab09_02.jpg">
 <br>
 
+3. AWS mapea sus precios taambién, a través de la página respectiva de precio de cada servicio.
+
+    * https://aws.amazon.com/es/ec2/pricing/on-demand/
+    * https://aws.amazon.com/es/vpc/pricing/
+    * https://aws.amazon.com/es/ebs/pricing/
+    * https://aws.amazon.com/es/s3/pricing/
+    * https://aws.amazon.com/es/rds/pricing/ 
+
+
 ---
 
 ### Eliminación de recursos creados
