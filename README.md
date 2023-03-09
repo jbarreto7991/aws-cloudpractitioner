@@ -1,5 +1,6 @@
 # AWS Cloud Practitioner
-### **Autor:** Jorge Barreto | [LinkedIn](https://www.linkedin.com/in/jorgebarretoolivos/)
+
+### **Autor:** Jorge Barreto | AWSx10 & AWS Community Builder | [LinkedIn](https://www.linkedin.com/in/jorgebarretoolivos/)
 <br>
 
 **Objetivo:**
@@ -30,3 +31,8 @@ Este repositorio tiene por objetivo desarrollar laboratorios complementarios al 
 * Despliegue de una función Lambda usando Python y variables de entorno
 #### **Laboratorio 09:** [README-Lab09.md](https://github.com/jbarreto7991/aws-cloudpractitioner/blob/main/Lab-09/README-Lab09.md)
 * Estimación de costos en AWS usando la calculadora
+#### **Laboratorio 10:** [README-Lab10.md](https://github.com/jbarreto7991/aws-cloudpractitioner/blob/main/Lab-10/README-Lab10.md)
+* Creación de una instancia EC2 Linux (Ubuntu)
+* Creación de un volumen EBS gp2 de 10 GB
+* Instalación de apache2
+* Configuración de mínimos privilegios para el security group
