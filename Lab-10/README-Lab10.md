@@ -63,7 +63,7 @@
 
 ### B -Instalación de apache2
 
-3. Usar la opción "Connect" de EC2 Instances para obtener el comando de conexión SSH de la instancia.
+3. Usar la opción "Connect - SSH Cliente" de EC2 Instances para obtener el comando de conexión SSH de la instancia.
 
 <img src="images/lab10_10.jpg">
 <br>

@@ -35,3 +35,5 @@ Este repositorio tiene por objetivo desarrollar laboratorios complementarios al 
 * Creación de una instancia EC2 Linux (Ubuntu) y un volumen EBS gp2 de 10 GB
 * Instalación de apache2
 * Configuración de mínimos privilegios para el Security Group
+#### **Laboratorio 11:** [README-Lab11.md](https://github.com/jbarreto7991/aws-cloudpractitioner/blob/main/Lab-11/README-Lab11.md)
+* Supervisión y alerta de intentos fallidos de autenticación en su cuenta de AWS usando CloudTrail, CloudWatch (Log, Filter, Alarm) y SNS
