@@ -1,4 +1,4 @@
-# AWS Cloud Practitioner - Laboratorio 09
+# AWS Cloud Practitioner - Laboratorio 10
 
 ### Objetivo: 
 * Creación de una instancia EC2 Linux (Ubuntu) y un volumen EBS gp2 de 10 GB
@@ -147,7 +147,7 @@ sudo apt-get install apache2 -y
 <img src="images/lab10_15.jpg">
 <br>
 
-### D - Análisis
+### D - Análisis de los servicios desplegados
 
 10. Analizar los siguientes componentes, según servicio:
 
