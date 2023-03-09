@@ -3,7 +3,7 @@
 ### Objetivo: 
 * Creación de una instancia EC2 Linux (Ubuntu) y un volumen EBS gp2 de 10 GB
 * Instalación de apache2
-* Configuración de mínimos privilegios para el security group
+* Configuración de mínimos privilegios para el Security Group
 
 ---
 

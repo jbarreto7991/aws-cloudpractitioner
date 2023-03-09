@@ -32,7 +32,6 @@ Este repositorio tiene por objetivo desarrollar laboratorios complementarios al 
 #### **Laboratorio 09:** [README-Lab09.md](https://github.com/jbarreto7991/aws-cloudpractitioner/blob/main/Lab-09/README-Lab09.md)
 * Estimación de costos en AWS usando la calculadora
 #### **Laboratorio 10:** [README-Lab10.md](https://github.com/jbarreto7991/aws-cloudpractitioner/blob/main/Lab-10/README-Lab10.md)
-* Creación de una instancia EC2 Linux (Ubuntu)
-* Creación de un volumen EBS gp2 de 10 GB
+* Creación de una instancia EC2 Linux (Ubuntu) y un volumen EBS gp2 de 10 GB
 * Instalación de apache2
-* Configuración de mínimos privilegios para el security group
+* Configuración de mínimos privilegios para el Security Group
