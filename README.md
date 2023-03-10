@@ -37,3 +37,5 @@ Este repositorio tiene por objetivo desarrollar laboratorios complementarios al 
 * Configuración de mínimos privilegios para el Security Group
 #### **Laboratorio 11:** [README-Lab11.md](https://github.com/jbarreto7991/aws-cloudpractitioner/blob/main/Lab-11/README-Lab11.md)
 * Supervisión y alerta de intentos fallidos de autenticación en su cuenta de AWS usando CloudTrail, CloudWatch (Log, Filter, Alarm) y SNS
+#### **Laboratorio 12:** [README-Lab12.md](https://github.com/jbarreto7991/aws-cloudpractitioner/blob/main/Lab-12/README-Lab12.md)
+* Creación de una VPC personalizada: VPC, Subnet, Route Table e Internet Gateway
