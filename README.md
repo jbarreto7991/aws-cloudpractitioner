@@ -39,3 +39,5 @@ Este repositorio tiene por objetivo desarrollar laboratorios complementarios al 
 * Supervisión y alerta de intentos fallidos de autenticación en su cuenta de AWS usando CloudTrail, CloudWatch (Log, Filter, Alarm) y SNS
 #### **Laboratorio 12:** [README-Lab12.md](https://github.com/jbarreto7991/aws-cloudpractitioner/blob/main/Lab-12/README-Lab12.md)
 * Creación de una VPC personalizada: VPC, Subnet, Route Table e Internet Gateway
+#### **Laboratorio 13:** [README-Lab13.md](https://github.com/jbarreto7991/aws-cloudpractitioner/blob/main/Lab-13/README-Lab13.md)
+* Accesos de usuarios IAM a determinados buckets S3 usando Custom IAM Policies 
