@@ -16,24 +16,24 @@
 <img src="images/lab04_01.jpg">
 <br>
 
-3. Seleccionar las opciones "Template is ready" y "Upload a template file". Luego, buscar el archivo "lab04_cloudformation_s3_ec2_db.yaml" y subirlo a AWS CloudFormation (El template se encuentra en: https://github.com/jbarreto7991/aws-cloudpractitioner/blob/main/Lab-04/code/lab04_cloudformation_s3_ec2_db.yaml). Dar clic en el botón "Next"  
+3. Seleccionar las opciones "Template is ready" (Sección "Prerequisite - Prepare template") y "Upload a template file" (Sección "Specify template"). Luego, buscar el archivo "lab04_cloudformation_s3_ec2_db.yaml" y subirlo a AWS CloudFormation (El template se encuentra en: https://github.com/jbarreto7991/aws-cloudpractitioner/blob/main/Lab-04/code/lab04_cloudformation_s3_ec2_db.yaml). Dar clic en el botón "Next"  
 
 <img src="images/lab04_02.jpg">
 <br>
 <br>
 
-4. Ingresar los siguientes datos en la sección "Stack name"
+4. Ingresar el siguiente dato en la sección "Stack name"
 * Stack name: Lab04
 
 <br>
 
 5. Ingresar los siguientes datos en la sección "Parameters". Luego, dar clic en el botón "Next".
 
-* InstancesFamily: Dejar valores por defecto. La instancia EC2 tomará el primer valor de esta lista.
-* KeyPair: Seleccionar llave indicada en el paso 1
+* InstancesFamily: Valor por defecto: t2.micro
+* KeyPair: Seleccionar KeyPair detallada en el paso 1
 * S3BucketName: Ingresar un valor único a nivel global. Se recomienda la estructura: nombre-apellido-aws-cloudpractitioner
-* SubnetCIDR1: Dejar valor por defecto
-* SubnetCIDR2: Dejar valor por defecto
+* SubnetCIDR1: Valor por defecto
+* SubnetCIDR2: Valor por defecto
 * VPCCIDR: Dejar valor por defecto. De tener una VPC con CIDR 192.168.0.0/16, modificar valor CIDR por uno donde no exista el solapamiento de redes. Las SubnetCIDR1 y SubnetCIDR2 deben formar parte del VPCCIDR.
 
 <img src="images/lab04_03.jpg">
@@ -171,22 +171,23 @@ Listar los siguientes componentes:
 
 
 ---
+
 ### C - Análisis de la aplicación aprovisionada
 
 <br>
 
-1. Ir al servicio S3 > Properties > Static website hosting > Bucket website endpoint. Dar clic en el enlace.
+1. Acceder al servicio S3, identificar el bucket creado y acceder al mismo. Ingresar a la sección "Properties" y buscar la sección "Static website hosting". Dar clic en el enlace.
 
 <img src="images/lab04_07.jpg">
 <img src="images/lab04_08.jpg">
 
-2. Ingresar valores en el campo "Nombre" y en el campo "Descripción". Dar clic en el botón "Create Task"
+2. El enlace nos direccionará a una aplicación. Ingresar valores en el campo "Nombre" y en el campo "Descripción". Dar clic en el botón "Create Task".
 
 <img src="images/lab04_09.jpg">
 
 <br>
 
-3. Acceder al servidor. Deberemos identificar previamente la IP Pública de la instancia aprovisionada.
+3. Acceder al servidor (vía SSH o System Manager-Session Manager). Si el método de conexión es SSH, se deberá identificar previamente la IP Pública de la instancia aprovisionada.
 
 ```bash
 ssh -i PATH/key_pair ubuntu@PUBLIC_IP
@@ -198,49 +199,71 @@ ssh -i .\cloud-practitioner.pem ubuntu@44.208.197.7
 
 4. Identificamos los siguientes componentes:
 
-    a. Volúmenes asociados a la instancia
-    ```bash
-    lsblk -fm
-    df -h
-    cat /etc/fstab
-    ```
+#### a. Volúmenes asociados a la instancia
 
-    b. Versión AWSCLI y listado de recursos
-    ```bash
-    aws --version
-    aws s3 ls
-    aws ec2 describe-instances --region us-east-1
-    aws cloudformation list-stacks --region us-east-1
-    ```
+```bash
+sudo su
+lsblk -fm
+df -h
+cat /etc/fstab
+```
 
-    c. Contenido de directorio
-    ```bash
-    cd /opt/aws-cloudpractitioner/App
-    ```
+#### b. Versión AWSCLI y listado de recursos
+
+```bash
+aws --version
+aws s3 ls
+aws ec2 describe-instances --region us-east-1
+aws cloudformation list-stacks --region us-east-1
+```
+
+#### c. Contenido de directorio
+```bash
+cd /opt/aws-cloudpractitioner/App
+```
     
-    d. Base de datos
-    ```bash
-    mysql
-    SELECT User, Host FROM mysql.user;
-    quit
+#### d. Base de datos
+```bash
+mysql
+SELECT User, Host FROM mysql.user;
+quit
 
-    mysql –u admin –p
-    [password: admin]
-    show databases;
-    use test;
-    show tables;
-    select * from tasks;
-    ```
+mysql –u admin –p
+[password: admin]
+show databases;
+use test;
+show tables;
+select * from tasks;
+```
 
-    <img src="images/lab04_11.jpg">
+<img src="images/lab04_11.jpg">
     
-    <br>
+<br>
 
-    e. Security Groups asociados a la Instancias. ¿A qué se deben estos múltiples registros?
+#### e. Security Groups asociados a la Instancias. ¿A qué se deben estos múltiples registros?
 
-    ```bash
-    curl https://ip-ranges.amazonaws.com/ip-ranges.json | jq -r  '.prefixes[] | select(.region=='\"$REGION\"') | select(.service=="S3") | .ip_prefix' > /opt/tmp_ip_s3_list
-    while read IP_S3_LIST; do
-    aws ec2 authorize-security-group-ingress --group-id $SECURITY_GROUP_ID --protocol tcp  --port 80 --cidr $IP_S3_LIST --region $REGION
-    done < /opt/tmp_ip_s3_list
-        ```
+```bash
+#Obteniendo la lista de IP desde donde AWS S3 consulta a la instancia EC2. Se considera solo las IP de la región donde se lanza la instancia
+REGION=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone | sed 's/\(.*\)[a-z]/\1/')
+curl https://ip-ranges.amazonaws.com/ip-ranges.json | jq -r '.prefixes[] | select(.region=='\"$REGION\"') | select(.service=="S3") | .ip_prefix' > /opt/tmp_ip_s3_list
+
+#Obteniendo ID VPC
+VPC_ID=$(aws ec2 describe-vpcs --filter Name=tag:Name,Values=VPC --query Vpcs[].VpcId --output text --region $REGION)
+            
+#Obteniendo el ID del Security Group asociado a la instancia
+SECURITY_GROUP_NAME=$(curl http://169.254.169.254/latest/meta-data/security-groups)
+SECURITY_GROUP_ID=$(aws ec2 describe-security-groups --filter Name=vpc-id,Values=$VPC_ID --region $REGION Name=group-name,Values=$SECURITY_GROUP_NAME | jq -r '.SecurityGroups[] | .GroupId') 
+            
+#Agregando la lista de IP al Security Group asociado a la instancia
+while read IP_S3_LIST; do
+aws ec2 authorize-security-group-ingress --group-id $SECURITY_GROUP_ID --protocol tcp  --port 80 --cidr $IP_S3_LIST --region $REGION
+done < /opt/tmp_ip_s3_list
+```
+
+---
+
+### Eliminación de recursos creados
+<br>
+
+1. Eliminar contenido del bucket S3 aprovisionado
+2. Eliminar Stack de CloudFormation "Lab04"
