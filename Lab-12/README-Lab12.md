@@ -113,6 +113,13 @@
 
 10. Para validar la conectividad en nuestra VPC personalizada deberemos aprovisionar una instancia EC2 en una de las subnets y poder conectarnos a ella. El Laboratorio 10 (Lab-10) explica el paso a paso para aprovisionar una instancia EC2. Durante el proceso de creación de la instancia modificar la sección "Network Settings" con los valores propios de la VPC creada en este laboratorio.
 
+<br>
+
+11. Diagrama de la solución
+
+<img src="images/lab12_00.jpg">
+<br>
+
 ---
 
 ### Eliminación de recursos creados
