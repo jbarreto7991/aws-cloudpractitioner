@@ -342,11 +342,11 @@ Resources:
             echo "@reboot root sleep 60 && cd /opt/aws-cloudpractitioner/App/backend/ && sudo npm start & > /dev/null 2>&1" >> /etc/crontab
             
             #Obteniendo AMI
-            sleep 20
-            REGION=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone | sed 's/\(.*\)[a-z]/\1/')
-            INSTANCE_ID=$(curl http://169.254.169.254/latest/meta-data/instance-id)
-            DATE=$(date | sed 's!:!!g' | awk '{print $4}')
-            aws ec2 create-image --instance-id $INSTANCE_ID --name AMI_$DATE --no-reboot --region $REGION
+            #sleep 20
+            #REGION=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone | sed 's/\(.*\)[a-z]/\1/')
+            #INSTANCE_ID=$(curl http://169.254.169.254/latest/meta-data/instance-id)
+            #DATE=$(date | sed 's!:!!g' | awk '{print $4}')
+            #aws ec2 create-image --instance-id $INSTANCE_ID --name AMI_$DATE --no-reboot --region $REGION
 
 
 

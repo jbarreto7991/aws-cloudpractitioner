@@ -144,8 +144,11 @@ aws elbv2 register-targets --target-group-arn $TARGETGROUP_ARN --targets Id=$INS
 
 <br>
 
+16. Generar un AMI de forma manual desde la consola del servicio EC2. Dar clic derecho sobre la instancia, seleccionar la opción "Image" y luego dar clic en la opción "Create Image". Esperar unos minutos mientras ña AMI finaliza su creación. Copiar el ID del AMI generado, este será usado en pasos posteriores.
 
-16. **6_lab06-alb-autoscaling-launchconfiguration.yaml** (Esta plantilla necesita que la AMI generada desde la plantilla 4_lab06-ec2-s3.yaml finalice su creación, además de finalizar el despliegue de las plantillas anteriores. Esta y la siguiente plantilla se podrán desplegar de forma paralela). La plantilla tiene 4 parámetros, 2 de ellos son obligatorios: "Key Pair" y "AmiInstances". Respecto a "Key Pair" ingresar el valor detallado en el paso 1. Sobre el parámetro "AmiInstances" ir a la sección AMIs de EC2 y copiar el valor del campo "AMI ID" o ejecutar el primer comando AWSCLI mostrado a continuación. Analizar los features del servicio EC2 **Launch Configuration de la sección Auto Scaling en EC2** y el diagrama de arquitectura facilitado. El siguiente comando considera el valor "cloud-practitioner" para el KeyPair y el valor "ami-0cc9a640553205d60" para el AmiInstances. Reemplazar según sea conveniente.
+<br>
+
+17. **6_lab06-alb-autoscaling-launchconfiguration.yaml** (Esta plantilla necesita que la AMI generada desde la plantilla 4_lab06-ec2-s3.yaml finalice su creación, además de finalizar el despliegue de las plantillas anteriores. Esta y la siguiente plantilla se podrán desplegar de forma paralela). La plantilla tiene 4 parámetros, 2 de ellos son obligatorios: "Key Pair" y "AmiInstances". Respecto a "Key Pair" ingresar el valor detallado en el paso 1. Sobre el parámetro "AmiInstances" ir a la sección AMIs de EC2 y copiar el valor del campo "AMI ID" o ejecutar el primer comando AWSCLI mostrado a continuación. Analizar los features del servicio EC2 **Launch Configuration de la sección Auto Scaling en EC2** y el diagrama de arquitectura facilitado. El siguiente comando considera el valor "cloud-practitioner" para el KeyPair y el valor "ami-0cc9a640553205d60" para el AmiInstances. Reemplazar según sea conveniente.
 
 <img src="images/lab06_12.jpg">
 <br>
@@ -209,19 +212,19 @@ aws cloudformation create-stack --stack-name lab06-autoscaling-launchconfigurati
 ```
 
 
-17. **7_lab06-sns.yaml**  (Esta y la anterior plantilla se podrán desplegar de forma paralela). La plantilla tiene 1 parámetro y este es obligatorio: "SNSSubscription". Ingresar el correo electrónico donde llegarán diferentes tipos de alertas. Una vez ingresado, AWS enviará un correo electrónico a la dirección ingresada con el objetivo de activar la subscripción. Analizar el servicio **SNS** y el diagrama de arquitectura facilitado. El siguiente comando considera el valor "example@domain.com" para el SNSSubscription. Reemplazar según sea conveniente.
+18. **7_lab06-sns.yaml**  (Esta y la anterior plantilla se podrán desplegar de forma paralela). La plantilla tiene 1 parámetro y este es obligatorio: "SNSSubscription". Ingresar el correo electrónico donde llegarán diferentes tipos de alertas. Una vez ingresado, AWS enviará un correo electrónico a la dirección ingresada con el objetivo de activar la subscripción. Analizar el servicio **SNS** y el diagrama de arquitectura facilitado. El siguiente comando considera el valor "example@domain.com" para el SNSSubscription. Reemplazar según sea conveniente.
 
 ```bash
 aws cloudformation create-stack --stack-name lab06-sns --template-body file://~/environment/aws-cloudpractitioner/Lab-06/code/7_lab06-sns.yaml --parameters ParameterKey=SNSSubscription,ParameterValue="example@domain.com"
 ```
 
-18. **8_lab06-autoscaling-asg.yaml**  (Esta plantilla necesitará que las anteriores plantillas hayan terminado su despliegue). La plantilla no tiene parámetros. Analizar el features **EC2 AutoScaling Group** y el diagrama de arquitectura facilitado.
+19. **8_lab06-autoscaling-asg.yaml**  (Esta plantilla necesitará que las anteriores plantillas hayan terminado su despliegue). La plantilla no tiene parámetros. Analizar el features **EC2 AutoScaling Group** y el diagrama de arquitectura facilitado.
 
 ```bash
 aws cloudformation create-stack --stack-name lab06-autoscaling-asg --template-body file://~/environment/aws-cloudpractitioner/Lab-06/code/8_lab06-autoscaling-asg.yaml
 ```
 
-19. En el paso 15 se indicaba el despliegue de nuestro sitio estático en S3, el cual redireccionaba inicialmente a una instancia EC2. Se hizo el cambio para que el sitio estático redireccione a una balanceador de aplicaciones (ALB). En estos últimos pasos hemos configurado el EC2 Autoscaling Group detrás del balanceador de aplicaciones. Actualmente detrás del balanceador de aplicaciones tenemos nuestra instancia EC2 inicial y además el EC2 Autoscaling Group. Será necesario eliminar la instancia inicial. Ejecutar los siguientes comandos. Validar que la aplicación sigue funcionando.
+20. En el paso 15 se indicaba el despliegue de nuestro sitio estático en S3, el cual redireccionaba inicialmente a una instancia EC2. Se hizo el cambio para que el sitio estático redireccione a una balanceador de aplicaciones (ALB). En estos últimos pasos hemos configurado el EC2 Autoscaling Group detrás del balanceador de aplicaciones. Actualmente detrás del balanceador de aplicaciones tenemos nuestra instancia EC2 inicial y además el EC2 Autoscaling Group. Será necesario eliminar la instancia inicial. Ejecutar los siguientes comandos. Validar que la aplicación sigue funcionando.
 
 
 ```bash
@@ -248,7 +251,7 @@ aws ec2 terminate-instances --instance-id $INSTANCES_ID
     ]
 }
 
-20. Desde la consola EC2 validaremos que existen 02 instancias EC2 con el nombre "ASG EC2 BACKEND" (esto debido a la configuración del valor "min" en el EC2 AutoScaling Group). Accederemos a cada instancia usando el servicio "EC2 System Manager - Session Manager". Dentro de la instancia ejecutar los siguientes comandos, al final validaremos que existe un servicio expuesto en el puerto 80. Hacer esto por cada instancia.
+21. Desde la consola EC2 validaremos que existen 02 instancias EC2 con el nombre "ASG EC2 BACKEND" (esto debido a la configuración del valor "min" en el EC2 AutoScaling Group). Accederemos a cada instancia usando el servicio "EC2 System Manager - Session Manager". Dentro de la instancia ejecutar los siguientes comandos, al final validaremos que existe un servicio expuesto en el puerto 80. Hacer esto por cada instancia.
 
 <img src="images/lab06_13.jpg">
 <br>
@@ -270,13 +273,13 @@ sudo lsof -t -i:80
 ```
 
 
-21. **9_lab06-cloudwatch-alarm-asg.yaml** (Esta plantilla necesitará que las demás plantillas se hayan desplegado en su totalidad. Se podrá desplegar de forma paralela con la siguiente plantilla). La plantilla no tiene parámetros. Analizar el servicio **CloudWatch** y el diagrama de arquitectura facilitado.
+22. **9_lab06-cloudwatch-alarm-asg.yaml** (Esta plantilla necesitará que las demás plantillas se hayan desplegado en su totalidad. Se podrá desplegar de forma paralela con la siguiente plantilla). La plantilla no tiene parámetros. Analizar el servicio **CloudWatch** y el diagrama de arquitectura facilitado.
 
 ```bash
 aws cloudformation create-stack --stack-name lab06-cloudwatch-alarm-asg --template-body file://~/environment/aws-cloudpractitioner/Lab-06/code/9_lab06-cloudwatch-alarm-asg.yaml
 ```
 
-22. Desde las instancias "ASG EC2 BACKEND" ejecutaremos los siguientes comandos con el propósito de estresar las instancias y visualizar el funcionamiento del autoescalado de las mismas. Analizar el servicio **CloudWatch**, los features **EC2 AutoScaling Group** e **EC2 Instances** y el diagrama de arquitectura facilitado.
+23. Desde las instancias "ASG EC2 BACKEND" ejecutaremos los siguientes comandos con el propósito de estresar las instancias y visualizar el funcionamiento del autoescalado de las mismas. Analizar el servicio **CloudWatch**, los features **EC2 AutoScaling Group** e **EC2 Instances** y el diagrama de arquitectura facilitado.
 
 ```bash
 sudo apt-get install stress
@@ -302,7 +305,7 @@ stress -c 4
 <br>
 
 
-23. **10_lab06-cloudfront.yaml** (Esta plantilla necesitará que las demás plantillas se hayan desplegado en su totalidad. Se podrá desplegar de forma paralela con la anterior plantilla, pero por un tema metodológico se remienda su despliegue de forma aislada). La plantilla tiene dos parámetros de los cuales ambos son obligatorios. El parámetro "OAIEnabled" será asignado en "yes" y el parámetro "S3BucketName" será el nombre del bucket creado en el paso 13. Analizar el servicio **CloudFront** y la nueva política asignada al bucket **S3**, además de revisarel diagrama de arquitectura facilitado.
+24. **10_lab06-cloudfront.yaml** (Esta plantilla necesitará que las demás plantillas se hayan desplegado en su totalidad. Se podrá desplegar de forma paralela con la anterior plantilla, pero por un tema metodológico se remienda su despliegue de forma aislada). La plantilla tiene dos parámetros de los cuales ambos son obligatorios. El parámetro "OAIEnabled" será asignado en "yes" y el parámetro "S3BucketName" será el nombre del bucket creado en el paso 13. Analizar el servicio **CloudFront** y la nueva política asignada al bucket **S3**, además de revisarel diagrama de arquitectura facilitado.
 
 ```bash
 BUCKET=$(aws s3 ls | sort -r | awk 'NR ==1 { print $3 }')
@@ -310,7 +313,7 @@ BUCKET=$(aws s3 ls | sort -r | awk 'NR ==1 { print $3 }')
 aws cloudformation create-stack --stack-name lab06-cloudfront --template-body file://~/environment/aws-cloudpractitioner/Lab-06/code/10_lab06-cloudfront.yaml --parameters ParameterKey=OAIEnabled,ParameterValue="yes" ParameterKey=S3BucketName,ParameterValue=$BUCKET
 ```
 
-24. Ingresar a la URL de la página web nuevamente. Validar que no se tiene acceso (403 Forbidden - Code: AccessDenied). Retirar algunas configuraciones del bucket S3 respecto a permisos públicos. Luego, ir al servicio "CloudFront" e ingresar al dominio que dispone AWS.
+25. Ingresar a la URL de la página web nuevamente. Validar que no se tiene acceso (403 Forbidden - Code: AccessDenied). Retirar algunas configuraciones del bucket S3 respecto a permisos públicos. Luego, ir al servicio "CloudFront" e ingresar al dominio que dispone AWS.
 
 <img src="images/lab06_23.jpg">
 <br>
@@ -330,7 +333,7 @@ aws s3api put-public-access-block --bucket $BUCKET --public-access-block-configu
 aws s3api delete-bucket-policy --bucket $BUCKET
 ```
 
-25. A esta aplicación podriamos además configurar los siguientes servicios:
+26. A esta aplicación podriamos además configurar los siguientes servicios:
     * Amazon Certificate Manager, para el cifrado en tránsito (SSL/TLS)
     * Amazon Route53, para la personalización del nombre del dominio
     * Amazon Cognito, para tener un login personalizado 
@@ -370,29 +373,29 @@ aws cloudformation delete-stack --stack-name lab06-vpc
 
 ```
 
-26. Eliminamos otros recursos generados durante el despliegue de la aplicación
+27. Eliminamos otros recursos generados durante el despliegue de la aplicación
 
-27. Eliminación manual del ambiente generado en Cloud9
+28. Eliminación manual del ambiente generado en Cloud9
 
 <img src="images/lab06_26.jpg">
 <br>
 
-28. Eliminación manual de la AMI generada
+29. Eliminación manual de la AMI generada
 
 <img src="images/lab06_27.jpg">
 <br>
 
-29. Eliminación manual de los snapshots generados
+30. Eliminación manual de los snapshots generados
 
 <img src="images/lab06_28.jpg">
 <br>
 
-30. Validar si la "Elastic IP" se liberó. No deberá aparecer ningún registro.
+31. Validar si la "Elastic IP" se liberó. No deberá aparecer ningún registro.
 
 <img src="images/lab06_29.jpg">
 <br>
 
-31. Eliminar bucket S3 generado en el paso 13.
+32. Eliminar bucket S3 generado en el paso 13.
 
 ```bash
 aws s3api delete-bucket --bucket $BUCKET
