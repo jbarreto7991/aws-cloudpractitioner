@@ -144,7 +144,7 @@ aws elbv2 register-targets --target-group-arn $TARGETGROUP_ARN --targets Id=$INS
 
 <br>
 
-16. Generar un AMI de forma manual desde la consola del servicio EC2. Dar clic derecho sobre la instancia, seleccionar la opción "Image" y luego dar clic en la opción "Create Image". Esperar unos minutos mientras ña AMI finaliza su creación. Copiar el ID del AMI generado, este será usado en pasos posteriores.
+16. Generar un AMI de forma manual desde la consola del servicio EC2. Dar clic derecho sobre la instancia, seleccionar la opción "Image and templates" y luego dar clic en la opción "Create Image". Esperar unos minutos mientras la AMI finaliza su creación. Copiar el ID del AMI generado, este será usado en pasos posteriores.
 
 <br>
 
