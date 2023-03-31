@@ -4,7 +4,10 @@
 <br>
 
 **Objetivo:**
-Este repositorio tiene por objetivo desarrollar laboratorios complementarios al curso de preparación para la certificación de AWS Cloud Practitioner.
+
+Este repositorio tiene por objetivo:
+ * Desarrollar laboratorios paso a paso para entender, desde la práctica, los diferentes servicios de AWS
+ * Desde la comprensión practica de los servicios, buscar obtener la certificación de AWS Cloud Practitioner
 
 ---
 
